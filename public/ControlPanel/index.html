@@ -6,17 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DM's Control Panel</title>
     <script src="controlPanel.js"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body onload="main()">
-    <div class="scene-control">
-        <div>
-            <!-- <label for="add-scene">Přidat scénu</label> -->
-            <input type="file" name="add-scene" id="add-scene-file">
-            <button id="add-scene-btn">Přidat scénu</button>
+    <div class="scene-container" id="scene-container">
+        <div class="scene" id="control-panel">
+            <div class="control-banner">
+                <label for="add-scene-file" class="upload-button">Nahrát soubor</label>
+                <input type="file" name="addscene" id="add-scene-file">
+                <input type="text" placeholder="Název scény" id="add-scene-name">
+                <button id="add-scene-btn">Přidat scénu</button>
+            </div>
         </div>
-        <table>
-
-        </table>
+        
     </div>
 </body>
 </html>

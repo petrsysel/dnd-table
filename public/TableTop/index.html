@@ -4,19 +4,13 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DM's Control Panel</title>
+    <title>Tabletop</title>
+    <script src="tabletop.js"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <script>
-        let source = new EventSource('/connect')
-
-        source.addEventListener('message', function(e) {
-            console.log(e.data)
-        }, false)
-
-        source.addEventListener('open', function(e) {
-            console.log("connected")
-        }, false)
-    </script>
+<body onload="main()">
+    <div class="image-container">
+        <img src="" alt="" id="scene-placeholder">
+    </div>
 </body>
 </html>
