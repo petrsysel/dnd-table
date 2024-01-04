@@ -1,4 +1,5 @@
 const fs = require('fs')
+const crypto = require('crypto')
 
 class Resources{
   resources = []
