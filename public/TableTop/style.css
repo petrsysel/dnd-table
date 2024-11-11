@@ -1,7 +1,27 @@
+@font-face {
+    font-family: "Aboreto";
+    src: url("../fonts/Aboreto-Regular.ttf");
+}
+
 body{
     margin: 0;
     padding: 0;
     background-color: black;
+}
+
+#ip-overlay {
+    font-family: Aboreto;
+    font-size: 5rem;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: black;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .image-container{

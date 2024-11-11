@@ -1,3 +1,5 @@
+const showBtnElems = []
+
 async function main(){
     let addSceneButton = document.getElementById("add-scene-btn")
     let addSceneName = document.getElementById('add-scene-name')
@@ -10,9 +12,11 @@ async function main(){
     console.log(resources)
     render(sceneContainer, resources)
 
+
     addSceneButton.onclick = async () => {
         let photo = addSceneFile.files[0];
         const sceneName = addSceneName.value
+        addSceneName.value = ""
 
         if(!photo | !sceneName) return
 
@@ -32,13 +36,20 @@ async function main(){
         }
     }
 }
+
+function removeSelectedClass(){
+    showBtnElems.forEach(btn => {
+        btn.children.item(0).classList.remove('selected-btn')
+    })
+}
+
 /**
  * 
  * @param {HTMLElement} parentElement 
  * @param {any[]} resources
  */
 function render(parentElement, resources){
-    resources.forEach(resource => {
+    resources.reverse().forEach(resource => {
         const elem = document.createElement('div')
         const removeImg = document.createElement('img')
         removeImg.src = '../icons/remove-white.png'
@@ -69,8 +80,13 @@ function render(parentElement, resources){
             await removeScene(resource.id)
             location.reload()
         }
+        
+        showBtnElems.push(showButton)
+
         showButton.onclick = async () => {
             await showScene(resource.id)
+            removeSelectedClass()
+            showButton.children.item(0).classList.add('selected-btn')
         }
         parentElement.appendChild(elem)
     })
