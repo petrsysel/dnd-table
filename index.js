@@ -238,7 +238,7 @@ app.listen(port, '0.0.0.0', () => {
 
   if(config.openOnBootup) open(`http://localhost:${port}/tt`, {
     app: {
-      name: "Firefox",
+      name: config.browserName,
       arguments: fullscreenParams
     }
   })

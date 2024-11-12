@@ -1,0 +1,6 @@
+{
+    "script": "npm start",
+    "watch": true,
+    "ignore_watch": ["./public/resources/"],
+    "name": "DND_TABLE_SERVER"
+}

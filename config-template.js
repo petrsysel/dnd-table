@@ -3,5 +3,6 @@ export default {
     password: "heslo",
     port: 3000,
     openOnBootup: true,
-    fullscreen: true
+    fullscreen: true,
+    browserName: "firefox"
 }
