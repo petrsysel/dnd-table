@@ -1,6 +1,9 @@
 {
     "script": "npm start",
     "watch": true,
-    "ignore_watch": ["./public/resources/"],
+    "ignore_watch": ["node_modules", "public/resources"],
+    "watch_options": {
+        "followSymlinks": false
+    },
     "name": "DND_TABLE_SERVER"
 }
