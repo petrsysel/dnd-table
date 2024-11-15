@@ -69,6 +69,11 @@ input{
     padding-block: 1.3rem;
 }
 
+a{
+    text-decoration: none;
+    color: white;
+}
+
 @media only screen and (max-width: 600px) {
     .control-banner {
         flex-wrap: wrap;

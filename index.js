@@ -46,6 +46,13 @@ class Resources{
     this.remove(id)
   }
 
+  updateFogs(id, fogs){
+    const index = this.resources.findIndex(r => r.id === id)
+    if(index >= 0) {
+      this.resources[index].fogs = fogs
+    }
+  }
+
   async save(){
     return new Promise((resolve, reject) => {
       const json = JSON.stringify(this.resources, null, 4)
@@ -139,6 +146,7 @@ function getWirelessIPAddress() {
 }
 
 app.use("/tt", express.static("./public/TableTop/"))
+app.use("/scene/:id", express.static("./public/scene_control"))
 // app.use("/", express.static("./public/ControlPanel"))
 app.use("/resources", express.static("./public/resources"))
 app.use("/icons", express.static("./public/icons"))
@@ -159,6 +167,27 @@ function checkPin(req, res, next){
 }
 
 app.get('/', checkPin, express.static("./public/ControlPanel"))
+
+app.put('/fogupdate', async (req, res) => {
+  const sceneId = req.body.id
+  const fogs = req.body.fogs
+
+  console.log("Scene ID:")
+  console.log(sceneId)
+  console.log("Fog definitions:")
+  console.log(fogs)
+  
+  resources.updateFogs(sceneId, fogs)
+  try{
+    await resources.save()
+    res.sendStatus(200)
+  }
+  catch(e){
+    console.log("Saving error")
+    console.log(e)
+    res.sendStatus(500)
+  }
+})
 
 app.get('/connect', function(req, res) {
   res.writeHead(200, {

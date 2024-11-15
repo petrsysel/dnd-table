@@ -56,12 +56,13 @@ function render(parentElement, resources){
         const showImg = document.createElement('img')
         showImg.src ='../icons/show-white.png'
         const removeButton = document.createElement('a')
-        const nameLabel = document.createElement('p')
+        const nameLabel = document.createElement('a')
         const showButton = document.createElement('a')
 
         removeButton.append(removeImg)
         showButton.append(showImg)
         nameLabel.innerHTML = resource.name
+        nameLabel.href = `/scene/${resource.id}`
 
         const banner = document.createElement('div')
         banner.classList.add('banner')
