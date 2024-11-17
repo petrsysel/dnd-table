@@ -22,7 +22,8 @@ function renderFogs(sceneInfo){
         delBtn.innerHTML = 'Odstranit'
         const nameLbl = document.createElement('p')
         nameLbl.innerHTML = fog.name
-        const editBtn = document.createElement('button')
+        const editBtn = document.createElement('a')
+        editBtn.href = `/fogedit/${sceneInfo.id}/${fog.id}`
         editBtn.innerHTML = "Upravit"
         const visibleBox = document.createElement('input')
         visibleBox.type = 'checkbox'
@@ -60,7 +61,7 @@ function renderFogs(sceneInfo){
         if(index >= 0) {
            fogs[index].visible = visible
            await uFogRequest(sceneInfo.id, fogs)
-           location.reload()
+        //    location.reload()
         }
     }
 

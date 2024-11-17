@@ -147,6 +147,8 @@ function getWirelessIPAddress() {
 
 app.use("/tt", express.static("./public/TableTop/"))
 app.use("/scene/:id", express.static("./public/scene_control"))
+app.use("/fogedit/:id/:fogid", express.static("./public/fog_edit"))
+
 // app.use("/", express.static("./public/ControlPanel"))
 app.use("/resources", express.static("./public/resources"))
 app.use("/icons", express.static("./public/icons"))
