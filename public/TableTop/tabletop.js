@@ -79,7 +79,12 @@ async function main(){
             height: imgPositionData.height
         }
         if(fogs && fogs.length > 0){
-            konvaStage.clear()
+            konvaStage.destroy()
+            konvaStage = konvaStage = new Konva.Stage({
+                container: 'konvacontainer', // ID HTML kontejneru
+                width: innerWidth,
+                height: innerHeight,
+            });
             fogs.filter(f => f.visible).forEach(f => {
                 createKonvaPolygon(f.data, imgRect)
             })
