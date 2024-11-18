@@ -130,7 +130,9 @@ function initEditor(imgRect){
         x: cp[0] * imgRect.width,
         y: cp[1] * imgRect.height,
         radius: 5,
-        stroke: '#ff0000',
+        stroke: 'white',
+        // fill: 'white',
+        zIndex: 10,
         strokeWidth: 1,
         draggable: true,
     }))
@@ -143,8 +145,8 @@ function initEditor(imgRect){
       
     polygon = new Konva.Line({
         points: circlesToPoints(circles),
-        fill: '#ff000088',
-        stroke: '#ff0000',
+        fill: '#AAAAAAAA',
+        // stroke: 'none',
         strokeWidth: 1,
         draggable: false,
         closed: true,
@@ -192,7 +194,7 @@ function initEditor(imgRect){
                     x: x,
                     y: y,
                     radius: 3,
-                    stroke: '#ff0000',
+                    stroke: 'white',
                     strokeWidth: 1,
                     draggable: true,
                 });
@@ -208,7 +210,7 @@ function initEditor(imgRect){
     })
       
       
-    layer.add(...circles, polygon);
+    layer.add(polygon, ...circles);
     stage.add(layer);
     layer.draw();
 }
