@@ -38,3 +38,8 @@ body{
 .tall{
     height: 100vh;
 }
+#konvacontainer{
+    position: fixed;
+    top: 0;
+    left: 0;
+}

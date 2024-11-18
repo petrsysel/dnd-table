@@ -12,9 +12,7 @@
     width: 100vw;
     height: calc(100vh - 2rem);
 }
-.editor-window *{
-    /* position: absolute; */
-}
+
 .editor-window img{
     position: absolute;
     left: 50%;
@@ -36,13 +34,6 @@
     color: white;
 }
 
-
-
-
-.center{
-    /* display: flex;
-    justify-content: center; */
-}
 .wide{
     width: 100vw;
 }
@@ -52,10 +43,4 @@
 
 .editor-container{
     z-index: 10;
-}
-.konvajs-content canvas{
-    /* position: fixed;
-    z-index: 10;
-    top: 0;
-    left: 0; */
 }

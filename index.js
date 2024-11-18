@@ -1,6 +1,6 @@
 import fs from "fs"
 import crypto from "crypto"
-import os from "os"
+import os, { type } from "os"
 import cookieParser from "cookie-parser"
 import open from "open"
 import { dirname } from "path"
@@ -173,15 +173,14 @@ app.get('/', checkPin, express.static("./public/ControlPanel"))
 app.put('/fogupdate', async (req, res) => {
   const sceneId = req.body.id
   const fogs = req.body.fogs
-
-  console.log("Scene ID:")
-  console.log(sceneId)
-  console.log("Fog definitions:")
-  console.log(fogs)
   
   resources.updateFogs(sceneId, fogs)
   try{
     await resources.save()
+    ttEvents.emit('fog-visibility', {
+      fogs: resources.get(sceneId).fogs,
+      sceneid: sceneId
+    })
     res.sendStatus(200)
   }
   catch(e){
@@ -199,7 +198,24 @@ app.get('/connect', function(req, res) {
   })
   // res.write(`data: ahoj \n\n`)
   ttEvents.on('show', (data) => {
-    res.write(`data: ${data} \n\n`)
+    res.write(`data: ${JSON.stringify({  // sendMessage("type", {data})
+      type: 'show-map',
+      path: data.path,
+      sceneid: data.sceneid
+    })} \n\n`)
+  })
+  ttEvents.on('render-fog', (data) => {
+    res.write(`data: ${JSON.stringify({  // sendMessage("type", {data})
+      type: 'render-fog',
+      fogs: data
+    })} \n\n`)
+  })
+  ttEvents.on('fog-visibility', (data) => {
+    res.write(`data: ${JSON.stringify({  // sendMessage("type", {data})
+      type: 'fog-visibility',
+      fogs: data.fogs,
+      sceneid: data.sceneid
+    })} \n\n`)
   })
 })
 app.get('/config', (req, res) => {
@@ -247,7 +263,11 @@ app.post('/showscene', (req, res) => {
   console.log("ShowScene - resource:")
   console.log(resource)
   if(resource){
-    ttEvents.emit('show', resource.path)
+    ttEvents.emit('show', {
+      path: resource.path,
+      sceneid: sceneId
+    })
+    ttEvents.emit('render-fog', resource.fogs)
   }
   res.send("OK")
 })
