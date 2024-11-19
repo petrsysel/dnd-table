@@ -207,7 +207,8 @@ app.get('/connect', function(req, res) {
   ttEvents.on('render-fog', (data) => {
     res.write(`data: ${JSON.stringify({  // sendMessage("type", {data})
       type: 'render-fog',
-      fogs: data
+      fogs: data.fogs,
+      sceneid: data.sceneid
     })} \n\n`)
   })
   ttEvents.on('fog-visibility', (data) => {
@@ -267,7 +268,10 @@ app.post('/showscene', (req, res) => {
       path: resource.path,
       sceneid: sceneId
     })
-    ttEvents.emit('render-fog', resource.fogs)
+    ttEvents.emit('render-fog', {
+      fogs: resource.fogs,
+      sceneid: sceneId
+    })
   }
   res.send("OK")
 })
