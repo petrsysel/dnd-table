@@ -1,9 +1,6 @@
 let konvaStage = null
 let lastSceneId = null
 
-let loadedSceneId = null
-let loadedFogSceneId = null
-
 let loadingOverlay = null
 
 async function main(){
@@ -40,19 +37,18 @@ async function main(){
     source.addEventListener('message', function(e) {
         const data = JSON.parse(e.data)
         if(data.type == 'show-map'){
+            hideBoard()
             const path = data.path
             lastSceneId = data.sceneid
             console.log(data)
             sceneImage.src = `../${path}`
             console.log("Connected")
             hideAddressOverlay()
-            loadedSceneId = data.sceneid
         }
         else if(data.type == 'render-fog'){
             console.log(data.fogs)
             if(!data.fogs) konvaStage.clear()
             fogs = data.fogs
-            loadedFogSceneId = data.sceneid
         }
         else if(data.type == 'fog-visibility'){
             console.log(data)
@@ -63,7 +59,6 @@ async function main(){
                 renderFogs()
             }
         }
-        checkLoadedResources()
     }, false)
 
     sceneImage.onload = function() {
@@ -98,7 +93,9 @@ async function main(){
             fogs.filter(f => f.visible).forEach(f => {
                 createKonvaPolygon(f.data, imgRect)
             })
+            showBoard()
         }
+        else showBoard()
     }
 
     async function getIp(){
@@ -117,15 +114,11 @@ async function main(){
     await showAddress()
 }
 
-function checkLoadedResources(){
-    if(loadedSceneId === loadedFogSceneId){
-        console.log("Image and Fog loaded successfully")
-        loadingOverlay.style.display = 'none'
-    }
-    else{
-        console.log("Waiting for resources")
-        loadingOverlay.style.display = 'block'
-    }
+function showBoard(){
+    loadingOverlay.style.display = 'none'
+}
+function hideBoard(){
+    loadingOverlay.style.display = 'block'
 }
 
 function createKonvaPolygon(points, imgRect) {
