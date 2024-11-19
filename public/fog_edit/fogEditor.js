@@ -6,6 +6,14 @@ let baseFog = [
     [0.75, 0.75],
     [0.25, 0.75]
 ]
+let defaultFog = [
+    [0.25, 0.25],
+    [0.75, 0.25],
+    [0.75, 0.75],
+    [0.25, 0.75]
+]
+
+var konvaStage = null
 
 const main = async () => {
     console.log("Initialized")
@@ -25,10 +33,22 @@ const main = async () => {
         width: imgPosition.width,
         height: imgPosition.height
     }
+    initKonvaStage(imgRect)
 
     setBaseFog(sceneInfo, fogId)
-    initEditor(imgRect)
+    initEditor(imgRect, konvaStage, baseFog)
     setControls(sceneInfo, imgRect, fogId)
+}
+
+function initKonvaStage(imgRect){
+    if(konvaStage) konvaStage.destroy()
+    konvaStage = new Konva.Stage({
+        container: 'editor-container',   // id of container <div>
+        width: innerWidth,
+        height: imgRect.height,
+        x: imgRect.x,
+        y: 0
+    });
 }
 
 function setBaseFog(sceneInfo, fogId){
@@ -40,6 +60,7 @@ function setBaseFog(sceneInfo, fogId){
 
 function setControls(sceneInfo, imgRect, fogId){
     const saveAndBack = document.getElementById('saveandback')
+    const resetBtn = document.getElementById('reset')
     saveAndBack.onclick = async (ev) => {
         ev.preventDefault()
         const coords = pairCoordinates(polygon.attrs.points)
@@ -53,7 +74,12 @@ function setControls(sceneInfo, imgRect, fogId){
         window.location.href = `/scene/${sceneInfo.id}`
     }
     // saveAndBack.href = `/scene/${sceneInfo.id}`
-
+    resetBtn.onclick = (e) => {
+        e.preventDefault()
+        baseFog = [...defaultFog]
+        initKonvaStage(imgRect)
+        initEditor(imgRect, konvaStage, baseFog)
+    }
     console.log(polygon)
 }
 
@@ -115,18 +141,10 @@ function getSceneInfo(resources, id){
     return sceneData
 }
 
-function initEditor(imgRect){
-    var stage = new Konva.Stage({
-        container: 'editor-container',   // id of container <div>
-        width: innerWidth,
-        height: imgRect.height,
-        x: imgRect.x,
-        y: 0
-    });
-      
+function initEditor(imgRect, stage, defaultFog){
     var layer = new Konva.Layer();
       
-    var circles = baseFog.map(cp => new Konva.Circle({
+    var circles = defaultFog.map(cp => new Konva.Circle({
         x: cp[0] * imgRect.width,
         y: cp[1] * imgRect.height,
         radius: 5,
