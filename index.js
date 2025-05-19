@@ -190,6 +190,15 @@ app.put('/fogupdate', async (req, res) => {
   }
 })
 
+app.put('/setambient', async (req, res) => {
+  const ambient = req.body.ambient
+  console.log(ambient)
+  ttEvents.emit('ambient', {
+    ambient: ambient
+  })
+  res.sendStatus(200)
+})
+
 app.get('/connect', function(req, res) {
   res.writeHead(200, {
     'Content-Type': 'text/event-stream',

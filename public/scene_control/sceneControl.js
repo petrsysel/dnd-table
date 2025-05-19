@@ -9,6 +9,8 @@ const main = async () => {
     initAddFog(sceneInfo)
 
     renderFogs(sceneInfo)
+
+    setAmbientControl()
 }
 
 function renderFogs(sceneInfo){
@@ -133,6 +135,64 @@ function generateUUID() {
         const v = c === 'x' ? r : (r & 0x3) | 0x8;
         return v.toString(16);
     });
+}
+
+
+function setAmbientControl(){
+    const colorPicker = document.getElementById('colorpicker')
+    const alphaRange = document.getElementById('alpharange')
+    const activeAmbient = document.getElementById('activeambient')
+
+    const ambientSettings = {
+        color: '#008000',
+        alpha: 0.1,
+        active: false
+    }
+
+    function ambientSettingsChanged(){
+        ambientSettings.color = colorPicker.value
+        ambientSettings.alpha = alphaRange.value
+        ambientSettings.active = activeAmbient.checked
+
+        localStorage.setItem('ambient', JSON.stringify(ambientSettings))
+
+        fetch("/setambient", {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                ambient: ambientSettings
+            })
+        })
+    }
+    function loadAmbinet(){
+        const storedSettings = localStorage.getItem('ambient')
+        if(storedSettings){
+            console.log(storedSettings)
+            const settings = JSON.parse(storedSettings)
+            ambientSettings.color = settings.color
+            ambientSettings.alpha = settings.alpha
+            ambientSettings.active = settings.active
+        }
+    }
+
+    ambientSettingsChanged()
+    loadAmbinet()
+
+    colorPicker.addEventListener('change', () => {
+        console.log(colorPicker.value)
+        ambientSettingsChanged()
+    })
+    alphaRange.addEventListener('change', () => {
+        console.log(alphaRange.value)
+        ambientSettingsChanged()
+    })
+    activeAmbient.addEventListener('change', () => {
+        console.log(activeAmbient.checked)
+        ambientSettingsChanged()
+    })
 }
 
 onload = main

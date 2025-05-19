@@ -61,3 +61,33 @@ body{
 
 }
 
+h1, h2{
+    text-align: center;
+}
+
+.ambient-settings{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* margin: 1rem; */
+}
+.ambient-settings *{
+    margin: 1rem;
+}
+.ambient-settings input[type=color]{
+    background-color: transparent;
+    color: white;
+    border: 1px solid white;
+    border-radius: 0.4rem;
+}
+.ambient-settings input[type=checkbox]{
+    width: 2rem;
+    height: 2rem;
+}
+.ambient-settings button{
+    background-color: transparent;
+    color: white;
+    border: 1px solid white;
+    border-radius: 0.4rem;
+    padding: 0.5rem;
+}
