@@ -7,6 +7,8 @@ class SceneManager{
     scenes: Scene[] = $state([])
     listFileName = path.join('static', 'scenes', 'scenes.json')
 
+    sceneChangeListeners: ((scene:Scene) => void)[] = []
+
     constructor(){
 
     }
@@ -71,6 +73,16 @@ class SceneManager{
 
     getScenes(){
         return this.scenes
+    }
+
+    onSceneChange(listener: (scene:Scene) => void){
+        this.sceneChangeListeners.push(listener)
+    }
+    emitSceneChange(sceneId: string){
+        const scene = this.scenes.find(s => s.id === sceneId)
+
+        if(scene) this.sceneChangeListeners.forEach(l => l(scene))
+        else this.sceneChangeListeners.forEach(l => l(this.scenes[0]))
     }
 }
 

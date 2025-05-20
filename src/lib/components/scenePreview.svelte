@@ -92,8 +92,15 @@
 
 <div
     class="container"
-    onclick={(e)=>{
-        console.log("clicked scene")
+    onclick={async (e)=>{
+        const formData = new FormData();
+        formData.append('scene-id', scene!.id);
+        const res = await fetch('/api/change-scene', {
+            method: 'POST',
+            body: formData,
+        })
+
+        await res.json();
     }}
 >
     <img src="{backgroundImage}" class="bg-img" alt=""/>

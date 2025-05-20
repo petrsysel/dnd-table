@@ -1,5 +1,7 @@
 import { produce } from "sveltekit-sse";
 import type { RequestEvent } from "./$types";
+import { sceneManager } from "$lib/server/sceneManager.svelte";
+import type { Scene } from "$lib/core/scene.svelte";
 
 function delay(milliseconds: number) {
     return new Promise(res => {
@@ -8,16 +10,13 @@ function delay(milliseconds: number) {
 }
 
 export const POST = async (ev: RequestEvent) => {
-    console.log("connected")
+    console.log("Projection connected")
     return produce(async (connection) => {
-        while(true){
-            const {error} = connection.emit('message', `The time is ${Date.now()}`)
+        sceneManager.onSceneChange((scene: Scene) => {
+            const {error} = connection.emit('scene', JSON.stringify(scene))
             if(error){
-                // console.log("Connection error:")
-                // console.log(error)
                 return
             }
-            await delay(1000)
-        }
+        })
     })
 }
