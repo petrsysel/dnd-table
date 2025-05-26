@@ -26,6 +26,7 @@
 		"buffer": "^6.0.3",
 		"express": "^5.1.0",
 		"fs.promises.exists": "^1.1.4",
+		"kampos": "^0.16.0",
 		"multer": "^2.0.0",
 		"path": "^0.12.7",
 		"sveltekit-sse": "^0.13.19"
