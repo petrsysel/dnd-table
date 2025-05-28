@@ -4,11 +4,14 @@
     import uploadIcon from '$lib/assets/icons/upload.svg'
     import delteIcon from '$lib/assets/icons/delete.svg'
     import editIcon from '$lib/assets/icons/edit.svg'
+    import checkIcon from '$lib/assets/icons/okey.svg'
+    import uncheckIcon from '$lib/assets/icons/circle.svg'
 
     import defaultBackground from '$lib/assets/images/rectangle.svg'
     import { onMount } from "svelte";
-    import { goto, invalidateAll } from "$app/navigation";
+    import { goto, invalidate, invalidateAll } from "$app/navigation";
     import type { Scene } from "$lib/core/scene.svelte";
+    import { filter } from "$lib/core/filterManager.svelte";
 
 
     let {
@@ -41,8 +44,8 @@
             file = selectedFile
         }
     }
-    const reload = () => {
-        goto(window.location.pathname,{
+    const reload = async () => {
+        await goto(window.location.pathname,{
             noScroll:true,
             invalidateAll: true
         })
@@ -61,9 +64,22 @@
         file = undefined
         backgroundImage = defaultBackground
 
-        const result = await res.json();
+        const result:Scene = (await res.json()).scene;
+
+        if(filter.activeCollection.id !== 'main'){
+            const collectionFormData = new FormData()
+            collectionFormData.set('collection-id', filter.activeCollection.id)
+            collectionFormData.set('scene-id', result.id)
+            const resColl = await fetch('/api/add-scene-to-collection', {
+                method: 'POST',
+                body: collectionFormData,
+            });
+            await resColl.json()
+        }
         
-        reload()
+        await filter.updateCollections()
+        await reload()
+        
     }
 
     const deleteScene = async (sceneId: string) => {
@@ -93,6 +109,7 @@
 <div
     class="container"
     onclick={async (e)=>{
+        if(!scene) return
         const formData = new FormData();
         formData.append('scene-id', scene!.id);
         const res = await fetch('/api/change-scene', {
@@ -144,7 +161,6 @@
                 type='button'
                 color="var(--normal100)"
                 onclick={() => {
-                    console.log("edit scene")
                 }}
             ></IconButton>
         {/if}
@@ -169,6 +185,28 @@
             <p>{scene!.name}</p>
         {/if}
     </div>
+    {#if !isFactory && filter.isEditMode}
+        <div onclick={e=>{e.stopPropagation()}}>
+            <IconButton
+                icon={filter.isInCollection(scene!.id)?checkIcon:uncheckIcon}
+                height={1.5}
+                type='button'
+                color="var(--normal100)"
+                onclick={async () => {
+                    const formData = new FormData()
+                    formData.append('collection-id', filter.activeCollection.id);
+                    formData.append('scene-id', scene!.id);
+                    const res = await fetch('/api/collection-toggle-scene', {
+                        method: 'POST',
+                        body: formData,
+                    })
+
+                    const response = await res.json();
+                    await filter.updateCollections()
+                }}
+            ></IconButton>
+        </div>
+    {/if}
 </div>
 
 <style lang="less">

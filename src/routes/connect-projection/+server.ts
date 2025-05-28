@@ -10,7 +10,6 @@ function delay(milliseconds: number) {
 }
 
 export const POST = async (ev: RequestEvent) => {
-    console.log("Projection connected")
     return produce(async (connection) => {
         sceneManager.onSceneChange((scene: Scene) => {
             const {error} = connection.emit('scene', JSON.stringify(scene))

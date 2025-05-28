@@ -65,9 +65,9 @@
     .img{
         transition: 0.2s ease-in-out;
         background-color: var(--normal900);
-        &.hoverd{
-            transition: 0.2s ease-in-out;
-            background-color: var(--normal100);
+        
+        &:hover{
+            transform: scale(1.2);
         }
     }
     button{

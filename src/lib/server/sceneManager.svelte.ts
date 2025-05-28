@@ -60,7 +60,6 @@ class SceneManager{
         const frequency = this.scenes.filter(s=>s.path === mapPath).length
         if(frequency === 1){
             const fileName = path.join('static', mapPath)
-            console.log("Removing "+fileName)
             if(await fsExists(fileName)){
                 await fs.rm(fileName)
             }

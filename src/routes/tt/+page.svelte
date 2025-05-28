@@ -22,7 +22,6 @@
             loadImage(imageFrom.src),
             loadImage(imageTo.src)
         ]
-        console.log(promisedImages)
         startListener()
     })
 
@@ -33,7 +32,7 @@
         imageTo.src = defaultImage
 
         const turbulence:any = effects.turbulence({ noise: noise.perlinNoise })
-        console.log(turbulence)
+
         const WIDTH = 854;
         const HEIGHT = 480;
         const CELL_FACTOR = 4;
@@ -61,11 +60,9 @@
 
         const target = document.querySelector('#target');
         const hippo = new Kampos({target, effects: [dissolve]});
-        console.log(hippo)
 
         startListener = () => {
             Promise.all(promisedImages).then(([fromImage, toImage]) => {
-                console.log("start")
                 hippo.setSource({media: fromImage, WIDTH, HEIGHT});
                 dissolve.to = toImage;
                 hippo.play((time:number) => {
