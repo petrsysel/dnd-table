@@ -122,49 +122,51 @@
 >
     <img src="{backgroundImage}" class="bg-img" alt=""/>
     <div class="shade"></div>
-    <div class="controls" onclick={e=>{e.stopPropagation()}}>
-        {#if isFactory}
-            <IconButton
-                icon={imageIcon}
-                height={1.5}
-                type='button'
-                color="var(--normal100)"
-                onclick={() => {
-                    fileSelect.click()
-                }}
-            ></IconButton>
-            <div class:desibled={!(file && name)}>
+    {#if !filter.isEditMode}
+        <div class="controls" onclick={e=>{e.stopPropagation()}}>
+            {#if isFactory}
                 <IconButton
-                    icon={uploadIcon}
+                    icon={imageIcon}
                     height={1.5}
                     type='button'
                     color="var(--normal100)"
                     onclick={() => {
-                        sendNewSceneData()
+                        fileSelect.click()
                     }}
-                    
                 ></IconButton>
-            </div>
-        {:else}
-            <IconButton
-                icon={delteIcon}
-                height={1.5}
-                type='button'
-                color="var(--normal100)"
-                onclick={() => {
-                    deleteScene(scene!.id)
-                }}
-            ></IconButton>
-            <IconButton
-                icon={editIcon}
-                height={1.5}
-                type='button'
-                color="var(--normal100)"
-                onclick={() => {
-                }}
-            ></IconButton>
-        {/if}
-    </div>
+                <div class:desibled={!(file && name)}>
+                    <IconButton
+                        icon={uploadIcon}
+                        height={1.5}
+                        type='button'
+                        color="var(--normal100)"
+                        onclick={() => {
+                            sendNewSceneData()
+                        }}
+                        
+                    ></IconButton>
+                </div>
+            {:else}
+                <IconButton
+                    icon={delteIcon}
+                    height={1.5}
+                    type='button'
+                    color="var(--normal100)"
+                    onclick={() => {
+                        deleteScene(scene!.id)
+                    }}
+                ></IconButton>
+                <IconButton
+                    icon={editIcon}
+                    height={1.5}
+                    type='button'
+                    color="var(--normal100)"
+                    onclick={() => {
+                    }}
+                ></IconButton>
+            {/if}
+        </div>
+    {/if}
     <div class="file-input">
         <input
             type="file"
@@ -186,7 +188,7 @@
         {/if}
     </div>
     {#if !isFactory && filter.isEditMode}
-        <div onclick={e=>{e.stopPropagation()}}>
+        <div onclick={e=>{e.stopPropagation()}} class="check-box">
             <IconButton
                 icon={filter.isInCollection(scene!.id)?checkIcon:uncheckIcon}
                 height={1.5}
@@ -244,6 +246,12 @@
                 transform: scale(1.1);
             }
         }
+    }
+    .check-box{
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 0.5rem;
     }
     .shade{
         background-color: transparent;
