@@ -12,6 +12,7 @@
     import { goto, invalidate, invalidateAll } from "$app/navigation";
     import type { Scene } from "$lib/core/scene.svelte";
     import { filter } from "$lib/core/filterManager.svelte";
+    import { sceneEditorManager } from "$lib/core/sceneEditorManager.svelte";
 
 
     let {
@@ -162,6 +163,7 @@
                     type='button'
                     color="var(--normal100)"
                     onclick={() => {
+                        sceneEditorManager.open(scene!.id)
                     }}
                 ></IconButton>
             {/if}

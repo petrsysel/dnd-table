@@ -83,6 +83,9 @@ class SceneManager{
         if(scene) this.sceneChangeListeners.forEach(l => l(scene))
         else this.sceneChangeListeners.forEach(l => l(this.scenes[0]))
     }
+    getScene(id: string){
+        return this.scenes.find(s => s.id === id)
+    }
 }
 
 export const sceneManager = new SceneManager()

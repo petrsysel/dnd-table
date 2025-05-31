@@ -1,13 +1,20 @@
 <script>
     import FilterPanel from "$lib/components/filterPanel.svelte";
-import SceneHub from "$lib/components/sceneHub.svelte";
+    import SceneEditorView from "$lib/components/sceneEditorView.svelte";
+    import SceneHub from "$lib/components/sceneHub.svelte";
     import { filter } from "$lib/core/filterManager.svelte.js";
+    import { sceneEditorManager } from "$lib/core/sceneEditorManager.svelte.js";
     import { onMount } from "svelte";
 
     const { data } = $props()
     filter.collections = data.collections
 
+    $effect(() => {
+        sceneEditorManager.isOpen ? document.body.classList.add('scroll-stop'):document.body.classList.remove('scroll-stop')
+    })
+
 </script>
+
 
 {#key data.collections}
     <FilterPanel
@@ -17,7 +24,7 @@ import SceneHub from "$lib/components/sceneHub.svelte";
 <SceneHub
     scenes={data.scenes}
 ></SceneHub>
-
+<SceneEditorView></SceneEditorView>
 <style lang="less">
     :global(*){
         @font-face {
@@ -40,5 +47,8 @@ import SceneHub from "$lib/components/sceneHub.svelte";
     :global(body) {
         background-color: var(--normal900);
         color: var(--normal100);
+    }
+    :global(.scroll-stop){
+        overflow: hidden;
     }
 </style>
