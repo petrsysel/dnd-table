@@ -7,9 +7,14 @@ export type FOW = {
     polygon: Point[],
     visible: boolean,
 }
+export type ImageSize = {
+  width: number,
+  height: number
+}
 export type Scene = {
     id: string,
     name: string,
     path: string,
-    fowLayers: FOW[]
+    fowLayers: FOW[],
+    mapSize: ImageSize
 }

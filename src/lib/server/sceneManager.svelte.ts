@@ -1,4 +1,4 @@
-import type { Scene } from "$lib/core/scene.svelte";
+import type { ImageSize, Scene } from "$lib/core/scene.svelte";
 import fs from 'fs/promises'
 import path from "path"
 import fsExists from 'fs.promises.exists'
@@ -13,12 +13,13 @@ class SceneManager{
 
     }
 
-    newScene(name: string, path: string){
+    newScene(name: string, path: string, mapSize: ImageSize){
         const newScene: Scene = {
             id: crypto.randomUUID(),
             name: name,
             path: path,
-            fowLayers: []
+            fowLayers: [],
+            mapSize: mapSize
         }
         this.scenes.push(newScene)
 

@@ -1,3 +1,6 @@
+import type { ImageSize } from "$lib/core/scene.svelte";
+import sharp from "sharp";
+
 export function isJsonString(str: string) {
     try {
         JSON.parse(str);
@@ -15,4 +18,12 @@ export function loadImage (src: string) {
     };
     img.src = src;
   });
+}
+
+export async function getImageSizeFromFile(filePath: string): Promise<ImageSize> {
+  const metadata = await sharp(filePath).metadata();
+  return {
+    width: metadata.width ?? 0,
+    height: metadata.height ?? 0
+  };
 }

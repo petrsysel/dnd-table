@@ -69,6 +69,13 @@ class CollectionManager{
     getAll(){
         return this.collections
     }
+
+    async sceneRemoved(sceneId: string){
+        this.collections.forEach(c => {
+            c.scenes = c.scenes.filter(s => s !== sceneId)
+        })
+        await this.save()
+    }
 }
 
 export const sceneCollections = new CollectionManager()

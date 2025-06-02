@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { updated } from "$app/state";
     import { sceneEditorManager } from "$lib/core/sceneEditorManager.svelte";
     import { onMount } from "svelte";
 
@@ -82,6 +81,9 @@
             const originalImage = document.createElement('img')
             if(!sceneEditorManager.openedScene) return
             originalImage.onload = () => {
+                console.log("Original image size")
+                console.log(originalImage.width)
+                console.log(originalImage.height)
                 const imageRatio = originalImage.width/originalImage.height
                 
                 const editorRatio = editor.clientWidth/editor.clientHeight
