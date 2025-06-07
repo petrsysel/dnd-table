@@ -152,6 +152,15 @@ class SceneManager{
     emitLayersChange(sceneId: string, layers: FOW[]){
         this.layersChangeListeners.forEach(l => l(sceneId, layers))
     }
+
+    async showHideAll(sceneId: string, visible: boolean){
+        const scene = this.scenes.find(s => s.id === sceneId)
+        if(!scene) return
+        scene.fowLayers.forEach(l => {
+            l.visible = visible
+        })
+        await this.saveScene(scene)
+    }
 }
 
 export const sceneManager = new SceneManager()

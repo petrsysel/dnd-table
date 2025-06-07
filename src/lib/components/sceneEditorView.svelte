@@ -29,6 +29,22 @@
         await sceneEditorManager.loadFow()
         sceneEditorManager.setActiveFow(result.fow.id)
     }
+
+    const showHideAll = async (state:"show"|"hide") => {
+        const scene = sceneEditorManager.openedScene
+        if(!scene) return
+
+        const formData = new FormData();
+        formData.append('scene-id', scene.id);
+        formData.append('state', state)
+        const res = await fetch('/api/showhideall-layers', {
+            method: 'POST',
+            body: formData,
+        })
+        const result = await res.json()
+
+        await sceneEditorManager.loadFow()
+    }
 </script>
 
 <div class="window" class:open={sceneEditorManager.isOpen}>
@@ -66,6 +82,12 @@
                     onclick={requestNewFow}
                 ></IconButton>
             </div>
+
+            <div class="hideshowall">
+                <button onclick={() => {showHideAll("show")}}>Odhalit vše</button>
+                <button onclick={() => {showHideAll('hide')}}>Skrýt vše</button>
+            </div>
+
             {#if sceneEditorManager.openedScene}
                 {#each sceneEditorManager.openedScene.fowLayers as layer}
                     <div class="fow-layer" class:active={sceneEditorManager.isActiveFow(layer.id)}
@@ -249,6 +271,27 @@
     }
     .visible{
         display: flex;
+    }
+
+    .hideshowall{
+        display: flex;
+        width: 100%;
+        gap: 0.5rem;
+
+        button{
+            flex: 1;
+            font-size: 1rem;
+            background-color: var(--normal800);
+            border: none;
+            border-radius: 0.3rem;
+            color: var(--normal100);
+            padding: 0.5rem;
+            cursor: pointer;
+
+            &:hover{
+                background-color: var(--normal900);
+            }
+        }
     }
     
 </style>
