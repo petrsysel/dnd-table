@@ -8,6 +8,7 @@
     import visibleIcon from '$lib/assets/icons/visible.svg'
     import notVisibleIcon from '$lib/assets/icons/notvisible.svg'
     import deleteIcon from '$lib/assets/icons/delete.svg'
+    import backIcon from '$lib/assets/icons/back-arrow.svg'
 
     let sceneNameInput: HTMLInputElement
 
@@ -51,8 +52,8 @@
     <div class="container">
         <div class="close-button">
             <IconButton
-                icon={closeIcon}
-                height={2}
+                icon={backIcon}
+                height={3}
                 type='button'
                 color="var(--normal100)"
                 onclick={() => {
