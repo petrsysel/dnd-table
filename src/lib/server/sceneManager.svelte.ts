@@ -1,4 +1,4 @@
-import type { ImageSize, Scene } from "$lib/core/scene.svelte";
+import type { FOW, ImageSize, Point, Scene } from "$lib/core/scene.svelte";
 import fs from 'fs/promises'
 import path from "path"
 import fsExists from 'fs.promises.exists'
@@ -8,6 +8,9 @@ class SceneManager{
     listFileName = path.join('static', 'scenes', 'scenes.json')
 
     sceneChangeListeners: ((scene:Scene) => void)[] = []
+    visibilityChangeListeners: ((fowId: string, visible: boolean) => void)[] = []
+    polygonChangeListeners: ((fowId: string, polygon: Point[]) => void)[] = []
+    layersChangeListeners: ((sceneId: string, layers: FOW[]) => void)[] = []
 
     constructor(){
 
@@ -86,6 +89,68 @@ class SceneManager{
     }
     getScene(id: string){
         return this.scenes.find(s => s.id === id)
+    }
+    getFow(id: string){
+        return this.scenes.find(s => s.id === id)?.fowLayers
+    }
+    async newFowLayer(sceneId: string, name: string){
+        const scene = this.scenes.find(s => s.id === sceneId)
+        if(!scene) return
+        const newFow = {
+            name: name,
+            id: crypto.randomUUID(),
+            polygon: [],
+            visible: false
+        }
+        scene.fowLayers.push(newFow)
+        await this.saveScene(scene)
+        return newFow
+    }
+    async deleteFowLayer(sceneId: string, fowId: string){
+        const scene = this.scenes.find(s => s.id === sceneId)
+        if(!scene) return
+        const fowIndex = scene.fowLayers.findIndex(f => f.id === fowId)
+        if(fowIndex < 0) return
+        scene.fowLayers.splice(fowIndex, 1)
+        await this.saveScene(scene)
+    }
+    async updateFowLayer(sceneId: string, fowId: string, polygon: Point[]){
+        const scene = this.scenes.find(s => s.id === sceneId)
+        if(!scene) return
+        const fow = scene.fowLayers.find(f => f.id === fowId)
+        if(!fow) return
+        fow.polygon = polygon
+        await this.saveScene(scene)
+    }
+    async toggleFowLayer(sceneId: string, fowId: string){
+        const scene = this.scenes.find(s => s.id === sceneId)
+        if(!scene) return
+        const fow = scene.fowLayers.find(f => f.id === fowId)
+        if(!fow) return
+        fow.visible = !fow.visible
+        await this.saveScene(scene)
+        return fow.visible
+    }
+
+    onFowVisibilityChange(listener: (fowId: string, visible: boolean)=>void){
+        this.visibilityChangeListeners.push(listener)
+    }
+    emitVisibilityChange(fowId: string, visible: boolean){
+        this.visibilityChangeListeners.forEach(l => l(fowId, visible))
+    }
+
+    onPolygonChange(listener: (fowId: string, polygon: Point[])=>void){
+        this.polygonChangeListeners.push(listener)
+    }
+    emitPolygonChange(fowId: string, polygon: Point[]){
+        this.polygonChangeListeners.forEach(l => l(fowId, polygon))
+    }
+
+    onLayersChange(listener: (sceneId: string, layers: FOW[])=>void){
+        this.layersChangeListeners.push(listener)
+    }
+    emitLayersChange(sceneId: string, layers: FOW[]){
+        this.layersChangeListeners.forEach(l => l(sceneId, layers))
     }
 }
 

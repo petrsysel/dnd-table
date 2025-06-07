@@ -3,7 +3,7 @@ import type { RequestHandler } from "./$types";
 import path from "path";
 import fs from 'fs/promises'
 import { sceneManager } from "$lib/server/sceneManager.svelte";
-import { getImageSizeFromFile } from "../../../utils";
+import { getImageSizeFromFile } from "$lib/server/serverUtils";
 
 export const POST: RequestHandler = async ({request}) => {
     const formData = await request.formData()
@@ -19,7 +19,6 @@ export const POST: RequestHandler = async ({request}) => {
 
     const uploadDir = 'static/maps';
 	const fileName = file.name
-    console.log(file)
 	const filePath = path.join(uploadDir, fileName);
 
     await fs.mkdir(uploadDir, { recursive: true });

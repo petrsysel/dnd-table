@@ -4,6 +4,31 @@
     import IconButton from "./iconButton.svelte";
     import MapPlane from "./FowEditor.svelte";
     import FowEditor from "./FowEditor.svelte";
+    import plusIcon from '$lib/assets/icons/plus.svg'
+    import visibleIcon from '$lib/assets/icons/visible.svg'
+    import notVisibleIcon from '$lib/assets/icons/notvisible.svg'
+    import deleteIcon from '$lib/assets/icons/delete.svg'
+
+    let sceneNameInput: HTMLInputElement
+
+    const requestNewFow = async () => {
+        const scene = sceneEditorManager.openedScene
+        if(!scene) return
+
+        const formData = new FormData();
+        formData.append('id', scene.id);
+        formData.append('name', sceneNameInput.value);
+        const res = await fetch('/api/new-fow-layer', {
+            method: 'POST',
+            body: formData,
+        });
+        
+        sceneNameInput.value = ""
+        const result = await res.json()
+        console.log(result)
+        await sceneEditorManager.loadFow()
+        sceneEditorManager.setActiveFow(result.fow.id)
+    }
 </script>
 
 <div class="window" class:open={sceneEditorManager.isOpen}>
@@ -20,10 +45,86 @@
             ></IconButton>  
         </div>
         <div class="editor">
+            <div class="block-overlay" class:visible={sceneEditorManager.openedScene? sceneEditorManager.openedScene.fowLayers.length <= 0:false}>
+                <p>Pro editování Fog of War je nejprve třeba vytvořit novou vrstvu.</p>
+            </div>
             <FowEditor></FowEditor>
         </div>
         <div class="layer-panel">
+            <p class="title">Fog of War</p>
+            <div class="new-layer">
+                <input bind:this={sceneNameInput} class="new-layer-name" type="text" placeholder="Nová FOW vrstva"
+                    onkeydown={e => {
+                        if(e.key == "Enter") requestNewFow()
+                    }}
+                >
+                <IconButton
+                    color="var(--normal100)"
+                    type="button"
+                    height={1.3}
+                    icon={plusIcon}
+                    onclick={requestNewFow}
+                ></IconButton>
+            </div>
+            {#if sceneEditorManager.openedScene}
+                {#each sceneEditorManager.openedScene.fowLayers as layer}
+                    <div class="fow-layer" class:active={sceneEditorManager.isActiveFow(layer.id)}
+                        onclick={() => {
+                            sceneEditorManager.setActiveFow(layer.id)
+                        }}
+                    >
+                        <div class="layer-name">
+                            <p>{layer.name}</p>
+                        </div>
+                        <div class="layer-controls">
+                            <div class="delete-button">
+                                <IconButton
+                                    color="var(--normal100)"
+                                    type="button"
+                                    height={1.3}
+                                    icon={deleteIcon}
+                                    onclick={async () => {
+                                        const scene = sceneEditorManager.openedScene
+                                        if(!scene) return
 
+                                        const formData = new FormData();
+                                        formData.append('scene-id', scene.id);
+                                        formData.append('fow-id', layer.id);
+                                        const res = await fetch('/api/delete-fow-layer', {
+                                            method: 'POST',
+                                            body: formData,
+                                        })
+                                        const result = await res.json()
+
+                                        await sceneEditorManager.loadFow()
+                                    }}
+                                ></IconButton>
+                            </div>
+                            <IconButton
+                                color="var(--normal100)"
+                                type="button"
+                                height={1.3}
+                                icon={layer.visible?visibleIcon:notVisibleIcon}
+                                onclick={async () => {
+                                    const scene = sceneEditorManager.openedScene
+                                    if(!scene) return
+
+                                    const formData = new FormData();
+                                    formData.append('scene-id', scene.id);
+                                    formData.append('fow-id', layer.id);
+                                    const res = await fetch('/api/toggle-fow-layer-visibility', {
+                                        method: 'POST',
+                                        body: formData,
+                                    })
+                                    const result = await res.json()
+
+                                    await sceneEditorManager.loadFow()
+                                }}
+                            ></IconButton>
+                        </div>
+                    </div>
+                {/each}
+            {/if}
         </div>
     </div>
         
@@ -52,8 +153,37 @@
         }
         .layer-panel{
             width: 20rem;
-            background-color: var(--normal900);
+            background-color: black;
             z-index: 200;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            box-sizing: border-box;
+            padding: 0.5rem;
+            .title{
+                font-size: 1.5rem;
+            }
+
+            .new-layer{
+                
+                display: flex;
+                width: 100%;
+                gap: 0.4rem;
+                box-sizing: border-box;
+                padding-right: 0.5rem;
+                input{
+                    flex: 1;
+                    font-size: 1rem;
+                    padding: 0.5rem;
+                    outline: none;
+                    background-color: var(--normal800);
+                    // border: 1px solid var(--normal100);
+                    border: none;
+                    border-radius: 0.3rem;
+                    color: var(--normal100);
+                }
+            }
         }
     }
     .open{
@@ -67,4 +197,58 @@
         left: 1rem;
         z-index: 201;
     }
+
+    .fow-layer{
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        box-sizing: border-box;
+        padding: 0 0.5rem;
+        align-items: center;
+        background-color: var(--normal800);
+        border-radius: 0.3rem;
+
+        .layer-name{
+            width: 100%;
+            height: 100%;
+            padding: 0.5rem 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        .layer-controls{
+            display: flex;
+            gap: 1rem;
+        }
+
+        .delete-button{
+            opacity: 0;
+        }
+        &:hover{
+            .delete-button{
+                opacity: 1;
+            }
+        }
+    }
+    .active{
+        box-shadow: 0px 0px 5px 1px white;
+    }
+
+    .block-overlay{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--alpha500);
+        z-index: 200;
+        display: none;
+        justify-content: center;
+        align-items: center;
+    }
+    .visible{
+        display: flex;
+    }
+    
 </style>

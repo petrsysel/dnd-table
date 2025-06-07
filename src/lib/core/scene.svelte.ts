@@ -4,6 +4,7 @@ export type Point = {
 }
 export type FOW = {
     name: string,
+    id: string,
     polygon: Point[],
     visible: boolean,
 }
