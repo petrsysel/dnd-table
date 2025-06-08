@@ -26,4 +26,4 @@ vite.config.ts.timestamp-*
 
 static/maps
 static/scenes
-static/collections.json
+/static/collections.json
