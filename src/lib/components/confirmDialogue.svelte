@@ -27,28 +27,31 @@
                     result = true
                     dialogue.close()
                 }}
-            >Ano</button>
+            >Yes</button>
             <button
                 onclick={() => {
                     result = false
                     dialogue.close()
                 }}
-            >Ne</button>
+            >No</button>
         </div>
     </div>
 </Dialogue>
 
 <style lang="less">
     .content{
+        box-sizing: border-box;
         width: 100%;
-        height: 6rem;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         gap: 1.5rem;
 
-        padding: 1rem 0;
+        
+        // margin: 1rem 0.5rem;
+        padding: 1rem;
+        
 
         button{
             cursor: pointer;

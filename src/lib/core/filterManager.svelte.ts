@@ -8,7 +8,7 @@ class FilterManager{
 
     mainCollection: SceneCollection = {
         id: 'main',
-        name: "Všechny scény",
+        name: "All scenes",
         scenes: []
     }
 

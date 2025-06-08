@@ -110,8 +110,8 @@
 
 <ConfirmDialogue
     bind:this={confirmDialogue}
-    label="Odstranit scénu"
-    warning="Opravdu si přeješ odstranit scénu?"
+    label="Remove scene"
+    warning="Do you really wish to remove the scene?"
 ></ConfirmDialogue>
 
 <div
@@ -191,7 +191,7 @@
         {#if isFactory}
             <input
                 type="text"
-                placeholder="Zadej název scény"
+                placeholder="Enter scene name"
                 bind:value={name}
                 onkeydown={e => {
                     if(e.key === 'Enter') sendNewSceneData()

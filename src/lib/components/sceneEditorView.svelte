@@ -51,8 +51,8 @@
 
 <ConfirmDialogue
     bind:this={layerDeleteConfirm}
-    label="Odstranit FOW vrstvu"
-    warning="Opravdu si přeješ odstranit FOW vrstvu?"
+    label="Remove FOW layer"
+    warning="Do you really wish to remove the FOW layer?"
 ></ConfirmDialogue>
 <div class="window" class:open={sceneEditorManager.isOpen}>
     <div class="container">
@@ -69,14 +69,14 @@
         </div>
         <div class="editor">
             <div class="block-overlay" class:visible={sceneEditorManager.openedScene? sceneEditorManager.openedScene.fowLayers.length <= 0:false}>
-                <p>Pro editování Fog of War je nejprve třeba vytvořit novou vrstvu.</p>
+                <p>To edit the FOG of War, it is first necessary to create a new layer.</p>
             </div>
             <FowEditor></FowEditor>
         </div>
         <div class="layer-panel">
             <p class="title">Fog of War</p>
             <div class="new-layer">
-                <input bind:this={sceneNameInput} class="new-layer-name" type="text" placeholder="Nová FOW vrstva"
+                <input bind:this={sceneNameInput} class="new-layer-name" type="text" placeholder="New FOW layer"
                     onkeydown={e => {
                         if(e.key == "Enter") requestNewFow()
                     }}
@@ -91,8 +91,8 @@
             </div>
 
             <div class="hideshowall">
-                <button onclick={() => {showHideAll("show")}}>Odhalit vše</button>
-                <button onclick={() => {showHideAll('hide')}}>Skrýt vše</button>
+                <button onclick={() => {showHideAll("show")}}>Reveal all</button>
+                <button onclick={() => {showHideAll('hide')}}>Hide all</button>
             </div>
 
             {#if sceneEditorManager.openedScene}

@@ -27,16 +27,16 @@
 </script>
 <ConfirmDialogue
     bind:this={confirmDialogue}
-    label="Odstranit kolekci"
-    warning="Opravdu si přeješ odstranit kolekci?"
+    label="Remove collection"
+    warning="Do you really wish to remove the collection?"
 ></ConfirmDialogue>
 
 <div class="container">
     <TextDialogue
         bind:this={textDialogue}
-        label="Nová kolekce"
-        placeholder="Zadej název kolekce"
-        buttonLabel="Vytvořit"
+        label="New collection"
+        placeholder="Enter collection name"
+        buttonLabel="Create"
     ></TextDialogue>
     {#key collections}
         <CollectionSelect

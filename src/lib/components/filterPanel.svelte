@@ -16,7 +16,7 @@
         {collections}
     ></CollectionManager>
 
-    <input type="text" placeholder="Kterou scénu hledáš?" onkeyup={e => {
+    <input type="text" placeholder="Which scene are you looking for?" onkeyup={e => {
         const value = (e.target as HTMLInputElement).value
         filter.setFilter(s => s.name.toLowerCase().includes(value.toLowerCase()))
     }}>
@@ -47,7 +47,7 @@
         input{
             font-size: 1rem;
             padding: 0.3rem;
-            width: 14rem;
+            width: 16rem;
             outline: none;
             background-color: var(--normal900);
             border: none;

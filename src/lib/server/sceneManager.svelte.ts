@@ -51,11 +51,6 @@ class SceneManager{
     }
 
     async removeScene(sceneId: string){
-        // odstranit scene ze seznamu
-        // zapsat nový seznam
-        // smazat soubor
-        // případně smazat obrázek
-
         const sceneIndex = this.scenes.findIndex(s=>s.id === sceneId)
         if(sceneIndex < 0) return false
 

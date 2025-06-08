@@ -72,6 +72,7 @@
     }
     .body{
         min-height: 5rem;
+        box-sizing: border-box;
     }
 
     .visible{
