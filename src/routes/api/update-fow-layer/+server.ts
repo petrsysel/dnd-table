@@ -10,10 +10,6 @@ export const POST: RequestHandler = async ({request}) => {
     const polygonRaw = formData.get('polygon') as string
     const polygon: Point[] = JSON.parse(polygonRaw)
 
-    console.log("request chaged")
-    console.log(sceneId)
-    console.log(fowId)
-    console.log(polygon)
     await sceneManager.updateFowLayer(sceneId, fowId, polygon)
     sceneManager.emitPolygonChange(fowId, polygon)
 

@@ -54,7 +54,7 @@
         justify-content: center;
         align-items: center;
         background-color: var(--alpha500);
-        z-index: 150;
+        z-index: 210;
     }
     .window{
         min-width: 20rem;

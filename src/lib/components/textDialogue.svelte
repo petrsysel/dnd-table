@@ -62,14 +62,17 @@
         button{
             cursor: pointer;
             background-color: var(--normal800);
-            border: none;
+            border: 1px solid var(--normal100);
             color: var(--normal200);
             border-radius: 0.2rem;
             font-size: 1rem;
             padding: 0.5rem;
+            width: 5rem;
+
 
             &:hover{
                 color: var(--normal100);
+                background-color: var(--normal900);
             }
         }
     }

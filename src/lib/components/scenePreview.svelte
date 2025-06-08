@@ -13,6 +13,7 @@
     import type { Scene } from "$lib/core/scene.svelte";
     import { filter } from "$lib/core/filterManager.svelte";
     import { sceneEditorManager } from "$lib/core/sceneEditorManager.svelte";
+    import ConfirmDialogue from "./confirmDialogue.svelte";
 
 
     let {
@@ -104,8 +105,14 @@
         }
     })
 
-    //nolint:
+    let confirmDialogue: ConfirmDialogue
 </script>
+
+<ConfirmDialogue
+    bind:this={confirmDialogue}
+    label="Odstranit scénu"
+    warning="Opravdu si přeješ odstranit scénu?"
+></ConfirmDialogue>
 
 <div
     class="container"
@@ -153,7 +160,9 @@
                     height={1.5}
                     type='button'
                     color="var(--normal100)"
-                    onclick={() => {
+                    onclick={async () => {
+                        const confirmRequest = await confirmDialogue.request()
+                        if(confirmRequest !== true) return
                         deleteScene(scene!.id)
                     }}
                 ></IconButton>

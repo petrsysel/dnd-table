@@ -50,8 +50,7 @@
             body: formData,
         })
 
-        const response = await res.json();
-        console.log("Send polygon to server")
+        const response = await res.json()
     }
 
     function updateTransform(){
@@ -157,8 +156,7 @@
         const up = () => {
             window.removeEventListener("mousemove", move);
             window.removeEventListener("mouseup", up);
-            draggingIndex = -1;
-            console.log("polygon changed")
+            draggingIndex = -1
             saveFowChange()
         };
 
@@ -229,8 +227,7 @@
             ...FOW.slice(0, insertIndex),
             { x: relativeX, y: relativeY },
             ...FOW.slice(insertIndex)
-            ];
-            console.log("polygon changed")
+            ]
             saveFowChange()
         }}>
             <polygon
@@ -266,7 +263,6 @@
                         FOW.splice(index, 1)
                     }
 
-                    console.log("polygon changed")
                     saveFowChange()
                 }}
                 style="transition: 0s"

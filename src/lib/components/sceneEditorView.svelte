@@ -9,8 +9,10 @@
     import notVisibleIcon from '$lib/assets/icons/notvisible.svg'
     import deleteIcon from '$lib/assets/icons/delete.svg'
     import backIcon from '$lib/assets/icons/back-arrow.svg'
+    import ConfirmDialogue from "./confirmDialogue.svelte";
 
     let sceneNameInput: HTMLInputElement
+    let layerDeleteConfirm: ConfirmDialogue
 
     const requestNewFow = async () => {
         const scene = sceneEditorManager.openedScene
@@ -26,7 +28,6 @@
         
         sceneNameInput.value = ""
         const result = await res.json()
-        console.log(result)
         await sceneEditorManager.loadFow()
         sceneEditorManager.setActiveFow(result.fow.id)
     }
@@ -48,6 +49,11 @@
     }
 </script>
 
+<ConfirmDialogue
+    bind:this={layerDeleteConfirm}
+    label="Odstranit FOW vrstvu"
+    warning="Opravdu si přeješ odstranit FOW vrstvu?"
+></ConfirmDialogue>
 <div class="window" class:open={sceneEditorManager.isOpen}>
     <div class="container">
         <div class="close-button">
@@ -107,6 +113,9 @@
                                     height={1.3}
                                     icon={deleteIcon}
                                     onclick={async () => {
+                                        const confirmRequest = await layerDeleteConfirm.request()
+                                        if(confirmRequest !== true) return
+
                                         const scene = sceneEditorManager.openedScene
                                         if(!scene) return
 

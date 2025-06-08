@@ -9,10 +9,12 @@
     import TextDialogue from "./textDialogue.svelte";
     import { goto } from "$app/navigation";
     import { filter } from "$lib/core/filterManager.svelte";
+    import ConfirmDialogue from "./confirmDialogue.svelte";
 
     const { collections }:{ collections: SceneCollection[] } = $props()
 
     let textDialogue: TextDialogue
+    let confirmDialogue: ConfirmDialogue
 
     const reload = () => {
         goto(window.location.pathname,{
@@ -23,6 +25,11 @@
 
 
 </script>
+<ConfirmDialogue
+    bind:this={confirmDialogue}
+    label="Odstranit kolekci"
+    warning="Opravdu si přeješ odstranit kolekci?"
+></ConfirmDialogue>
 
 <div class="container">
     <TextDialogue
@@ -87,6 +94,8 @@
             type="button"
             color="var(--normal100)"
             onclick={async () => {
+                const confirmResult = await confirmDialogue.request()
+                if(confirmResult !== true) return
                 const formData = new FormData()
                 formData.append('id', filter.activeCollection.id);
                 const res = await fetch('/api/delete-collection', {
