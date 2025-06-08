@@ -43,9 +43,9 @@ Pokud už máš jednou sestaveno, stačí:
 ```bash
 npm run start
 ```
-Aplikace poběží na lokální adrese, která se zobrazí po spuštění (Například: http://localhost:4173/). Adresu je třeba otevřít v prohlížeči.
+Aplikace poběží na lokální adrese, která se zobrazí po spuštění (Například: http://127.0.0.1:3000). Adresu je třeba otevřít v prohlížeči.
 
-Na základní adrese běží ovládací panel pro DM. Promítací plocha (tabletop) běží na stejné adrese na stránce `/tt` (Například: http://localhost:4173/tt).
+Na základní adrese běží ovládací panel pro DM. Promítací plocha (tabletop) běží na stejné adrese na stránce `/tt` (Například: http://127.0.0.1:3000/tt).
 
 Tuto stránku otevři na druhém monitoru nebo televizi a spusť ve fullscreenu pomocí klávesy F11.
 
@@ -96,11 +96,11 @@ If already built, just run:
 npm run start
 ```
 
-The app will run locally at an address shown in the terminal (e.g. http://localhost:4173/).
+The app will run locally at an address shown in the terminal (e.g. http://127.0.0.1:3000).
 Open this address in your browser.
 
 The default page is the DM control panel.
-The tabletop view is available at /tt (e.g. http://localhost:4173/tt).
+The tabletop view is available at /tt (e.g. http://127.0.0.1:3000/tt).
 
 Open the /tt page on your second monitor or TV, and enter fullscreen with F11.
 

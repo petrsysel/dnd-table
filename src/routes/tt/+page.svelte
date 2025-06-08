@@ -272,7 +272,10 @@
     }
 
     onMount(() => {
-        prepareTransition()
+        setTimeout(() => {
+            prepareTransition()
+            console.log("Loaded")
+        },100)
     })
 </script>
 
