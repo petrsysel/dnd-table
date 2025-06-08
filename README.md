@@ -107,3 +107,7 @@ Open the /tt page on your second monitor or TV, and enter fullscreen with F11.
 ---
 
 Created out of love for games, storytelling, and the magic of gathering around a table.
+
+# License
+
+This project is licensed under the MIT License – see the [LICENSE](./LICENSE.txt) file for details.
