@@ -193,6 +193,9 @@
                 type="text"
                 placeholder="Zadej název scény"
                 bind:value={name}
+                onkeydown={e => {
+                    if(e.key === 'Enter') sendNewSceneData()
+                }}
             >
         {:else}
             <p>{scene!.name}</p>
