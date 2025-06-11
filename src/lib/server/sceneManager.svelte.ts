@@ -2,6 +2,7 @@ import type { FOW, ImageSize, Point, Scene } from "$lib/core/scene.svelte";
 import fs from 'fs/promises'
 import path from "path"
 import fsExists from 'fs.promises.exists'
+import { existsSync } from "fs";
 
 class SceneManager{
     scenes: Scene[] = $state([])
@@ -14,6 +15,13 @@ class SceneManager{
 
     constructor(){
 
+    }
+
+    async initFiles(){
+        const scenesPath = path.join('static','scenes')
+        const mapsPath = path.join('static','maps')
+        if(!await existsSync(scenesPath)) await fs.mkdir(scenesPath)
+        if(!await existsSync(mapsPath)) await fs.mkdir(mapsPath)
     }
 
     newScene(name: string, path: string, mapSize: ImageSize){
@@ -40,6 +48,10 @@ class SceneManager{
         fs.writeFile(this.listFileName, JSON.stringify(sceneList))
     }
     async load(){
+        if(!await existsSync(this.listFileName)){
+            await this.initFiles()
+            await this.saveSceneList()
+        }
         const content = await fs.readFile(this.listFileName, 'utf-8')
         const list: string[] = JSON.parse(content)
         this.scenes = []
