@@ -45,7 +45,7 @@ class SceneManager{
     }
     async saveSceneList(){
         const sceneList = this.scenes.map(s => `${s.id}.json`)
-        fs.writeFile(this.listFileName, JSON.stringify(sceneList))
+        await fs.writeFile(this.listFileName, JSON.stringify(sceneList))
     }
     async load(){
         if(!await existsSync(this.listFileName)){
