@@ -1,17 +1,22 @@
-import { handler } from './build/handler.js';
-import express from 'express';
+import { handler } from './build/handler.js'
+import express from 'express'
+import { fileURLToPath } from 'url'
+import { dirname } from 'path'
 
-const app = express();
+const app = express()
 
-// add a route that lives separately from the SvelteKit app
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+
 app.get('/healthcheck', (req, res) => {
 
-	res.end('ok');
-});
+	res.end('ok')
+})
 
-// let SvelteKit handle everything else, including serving prerendered pages and static assets
-app.use(express.static('/static/'))
-app.use(handler);
+console.log(__dirname + '/static')
+app.use(express.static(__dirname + '/static'))
+
+app.use(handler)
 
 app.listen(3000, () => {
 	console.log(`
@@ -21,4 +26,4 @@ Your magical table is ready.
 📜 Control Panel → http://127.0.0.1:3000
 🎲 Tabletop View → http://127.0.0.1:3000/tt	
 `)
-});
+})
